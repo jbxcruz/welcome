@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome Back!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .input-container, .video-container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.4);
+      text-align: center;
+      transition: 0.3s ease;
+    }
+
+    .input-container {
+      width: 300px;
+    }
+
+    .input-container input {
+      padding: 10px;
+      width: 80%;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .input-container button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .input-container button:hover {
+      background: #2563eb;
+    }
+
+    .video-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 80vw;
+      max-width: 900px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+      margin: 20px 0;
+      pointer-events: none; /* Cannot be clicked */
+      user-select: none; /* Cannot be dragged or highlighted */
+      box-shadow: 0 4px 25px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    .counter {
+      font-size: 18px;
+      margin-top: 10px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="input-container" id="nameInputContainer">
+    <h2>Input your name here please:</h2>
+    <input type="text" id="userName" placeholder="Enter your name" required>
+    <br>
+    <button id="startBtn">Start</button>
+  </div>
+
+  <div class="video-container" id="videoContainer">
+    <h2 id="greetingText"></h2>
+    <video id="loopVideo" playsinline>
+      <!-- Replace this video with your own -->
+      <source src="hehe_u_gay.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p class="counter">You have sat through <span id="spinCount">0</span> spins.</p>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const userNameInput = document.getElementById('userName');
+    const nameInputContainer = document.getElementById('nameInputContainer');
+    const videoContainer = document.getElementById('videoContainer');
+    const greetingText = document.getElementById('greetingText');
+    const loopVideo = document.getElementById('loopVideo');
+    const spinCount = document.getElementById('spinCount');
+
+    let count = 0;
+    let counterInterval;
+
+    startBtn.addEventListener('click', async () => {
+      const name = userNameInput.value.trim();
+      if (name === "") {
+        alert("Please enter your name!");
+        return;
+      }
+
+      greetingText.textContent = `Hey ${name}, this is your fucking homo!`;
+      nameInputContainer.style.display = "none";
+      videoContainer.style.display = "flex";
+
+      // Allow audio after user interaction
+      loopVideo.muted = false;
+      try {
+        await loopVideo.play();
+      } catch (err) {
+        console.warn("Autoplay with sound blocked:", err);
+      }
+
+      // Start counter (every 0.5 seconds)
+      counterInterval = setInterval(() => {
+        count++;
+        spinCount.textContent = count;
+      }, 500);
+    });
+
+    // Prevent user from pausing or muting
+    loopVideo.onpause = () => loopVideo.play();
+    loopVideo.onvolumechange = () => {
+      if (loopVideo.muted) loopVideo.muted = false;
+      loopVideo.volume = 1.0;
+    };
+  </script>
+
+</body>
+</html>
